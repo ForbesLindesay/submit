@@ -12,8 +12,8 @@ var defer = require('promises-a');
 module.exports = Submit;
 
 /**
- * Initialize a new `Submit` file`.
- * This represents a single file upload.
+ * Initialize a new `Submit` form.
+ * This represents a single form upload.
  *
  * Events:
  *
@@ -22,12 +22,12 @@ module.exports = Submit;
  *   - `progress` upload in progress (`e.percent` etc)
  *   - `end` upload is complete
  *
- * @param {File} file
+ * @param {FormData} form
  * @api private
  */
 
 function Submit(form) {
-  if (!(this instanceof Submit)) return new Submit(file);
+  if (!(this instanceof Submit)) return new Submit(form);
   Emitter.call(this);
   this.form = form;
 
@@ -35,8 +35,8 @@ function Submit(form) {
   this.then = def.promise.then.bind(def.promise);
   this.done = def.promise.done.bind(def.promise);
 
-  this.on('end', function () {
-    def.fulfill(null);
+  this.on('end', function (req) {
+    def.fulfill(req);
   });
   this.on('error', function (err) {
     def.reject(err);
