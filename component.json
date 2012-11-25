@@ -1,0 +1,13 @@
+{
+  "name": "submit",
+  "repo": "ForbesLindesay/submit",
+  "description": "Submit form data with progress api",
+  "version": "0.0.1",
+  "keywords": [],
+  "dependencies": {},
+  "development": {},
+  "license": "MIT",
+  "scripts": [
+    "index.js"
+  ]
+}
