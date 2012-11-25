@@ -3,6 +3,7 @@
  */
 
 var Emitter = require('emitter');
+var defer = require('promises-a');
 
 /**
  * Expose `Submit`.
@@ -29,6 +30,22 @@ function Submit(form) {
   if (!(this instanceof Submit)) return new Submit(file);
   Emitter.call(this);
   this.form = form;
+
+  var def = defer();
+  this.then = def.promise.then.bind(def.promise);
+  this.done = def.promise.done.bind(def.promise);
+
+  this.on('end', function () {
+    def.fulfill(null);
+  });
+  this.on('error', function (err) {
+    def.reject(err);
+  });
+  this.on('abort', function () {
+    var err = new Error('Form submission aborted');
+    err.code = 'UploadAborted';
+    def.reject(err);
+  });
 }
 
 /**
