@@ -51,7 +51,7 @@ Submit.prototype.to = function(path){
   req.onload = this.onload.bind(this);
   req.onerror = this.onerror.bind(this);
   req.upload.onprogress = this.onprogress.bind(this);
-  req.send(form);
+  req.send(this.form);
 };
 
 /**
