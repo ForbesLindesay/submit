@@ -1,6 +1,6 @@
 {
   "name": "submit",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "form upload and progress api",
   "keywords": [],
   "dependencies": {
