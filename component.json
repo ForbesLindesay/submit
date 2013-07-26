@@ -2,7 +2,7 @@
   "name": "submit",
   "repo": "ForbesLindesay/submit",
   "description": "Submit form data with progress api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "keywords": [],
   "dependencies": {
     "then/promise": "*"
