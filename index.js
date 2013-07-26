@@ -2,114 +2,48 @@
  * Module dependencies.
  */
 
-var Emitter = require('emitter');
-var defer = require('promises-a');
+var Promise = require('promise');
 
 /**
  * Expose `Submit`.
  */
 
-module.exports = Submit;
+module.exports = submit;
 
 /**
  * Initialize a new `Submit` form.
  * This represents a single form upload.
  *
- * Events:
- *
- *   - `error` an error occurred
- *   - `abort` upload was aborted
- *   - `progress` upload in progress (`e.percent` etc)
- *   - `end` upload is complete
- *
  * @param {FormData} form
- * @api private
+ * @api public
  */
 
-function Submit(form) {
-  if (!(this instanceof Submit)) return new Submit(form);
-  Emitter.call(this);
-  this.form = form;
-
-  var def = defer();
-  this.then = def.promise.then.bind(def.promise);
-  this.done = def.promise.done.bind(def.promise);
-
-  this.on('end', function (req) {
-    def.fulfill(req);
-  });
-  this.on('error', function (err) {
-    def.reject(err);
-  });
-  this.on('abort', function () {
-    var err = new Error('Form submission aborted');
-    err.code = 'UploadAborted';
-    def.reject(err);
-  });
+function submit(form, to) {
+  if (arguments.length === 2) return (new Submission(form)).to(to)
+  return new Submission(form);
 }
-
-/**
- * Mixin emitter.
- */
-
-Emitter(Submit.prototype);
-
-/**
- * Submit to the given `path`.
- *
- * @param {String} path
- * @api public
- */
-
-Submit.prototype.to = function(path){
-  // TODO: x-browser
-  var req = this.req = new XMLHttpRequest;
-  req.open('POST', path);
-  req.onload = this.onload.bind(this);
-  req.onerror = this.onerror.bind(this);
-  req.upload.onprogress = this.onprogress.bind(this);
-  req.send(this.form);
-  return this;
-};
-
-/**
- * Abort the XHR.
- *
- * @api public
- */
-
-Submit.prototype.abort = function(){
-  this.emit('abort');
-  this.req.abort();
-};
-
-/**
- * Error handler.
- *
- * @api private
- */
-
-Submit.prototype.onerror = function(e){
-  this.emit('error', e);
-};
-
-/**
- * Onload handler.
- *
- * @api private
- */
-
-Submit.prototype.onload = function(e){
-  this.emit('end', this.req);
-};
-
-/**
- * Progress handler.
- *
- * @api private
- */
-
-Submit.prototype.onprogress = function(e){
-  e.percent = e.loaded / e.total * 100;
-  this.emit('progress', e);
-};
+function Submission(form) {
+  this.form = form;
+}
+Submission.prototype.to = function (url) {
+  var req = new XMLHttpRequest();
+  var listeners = [];
+  var result = new Promise(function (resolve, reject) {
+    req.open('POST', path);
+    req.onload = function () { resolve(req) };
+    req.onerror = reject;
+    req.send(this.from);
+  })
+  req.onprogress = function (e) {
+    e.percent = e.loaded / e.total * 100;
+    for (var i = 0; i < listeners.length; i++) {
+      listeners[i](e)
+    }
+  }
+  result.on = function (name, fn) {
+    if (name != 'progress') throw new Error('the only supported method is progress');
+    listeners.push(fn)
+    return this;
+  }
+  return result;
+}

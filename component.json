@@ -2,11 +2,10 @@
   "name": "submit",
   "repo": "ForbesLindesay/submit",
   "description": "Submit form data with progress api",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "keywords": [],
   "dependencies": {
-    "component/emitter": "*",
-    "ForbesLindesay/promises-a": "*"
+    "then/promise": "*"
   },
   "development": {},
   "license": "MIT",

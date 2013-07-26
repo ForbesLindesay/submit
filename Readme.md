@@ -1,40 +1,36 @@
 # submit
 
-  form upload and progress api
+form upload and progress api
+
+[![Build Status](https://travis-ci.org/ForbesLindesay/submit.png?branch=master)](https://travis-ci.org/ForbesLindesay/submit)
+[![Dependency Status](https://gemnasium.com/ForbesLindesay/submit.png)](https://gemnasium.com/ForbesLindesay/submit)
+[![NPM version](https://badge.fury.io/js/submit.png)](http://badge.fury.io/js/submit)
 
 ## Installation
 
-    $ component install ForbesLindesay/submit
+    npm install submit
 
-## Events
+## Usage: `submit(form).to(path)`
 
-  - `error` an error occurred
-  - `abort` upload was aborted
-  - `progress` (e) upload in progress (`e.percent`, `e.totalSize` etc)
-  - `end` upload is complete
+Submit the form `form` to the path `path`.
 
-## API
-
-### Submit(form)
-
-  Initialize an `Submit` with the given `form`, where `form`
-  is a `FormData` object.
+The result is a [Promises/A+](http://promises-aplus.github.io/promises-spec/) promise with the addition of a small subset of the event emitter API that only supports `progress` events which can be handled by calling `.on('progress', (e) => ...)`
 
 ```js
-var submit = new Submit(form);
-var submit = Submit(form);
+var submit = require('submit');
+submit(form).to('/upload')
+  .on('progress', function (e) {
+    console.log(e.percent + '%');
+  })
+  .then(function (res) {
+    console.log('complete')
+  }, function (err) {
+    console.log('error')
+  })
+  .done();
+}
 ```
 
-### Submit#to(path)
-
-  __POST__ the multipart form to `path`.
-
-```js
-submit.to('/upload');
-submit.on('progress', reportProgress);
-submit.on('end', done);
-```
-
-# License
+## License
 
   MIT
