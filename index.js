@@ -29,7 +29,7 @@ Submission.prototype.to = function (url) {
   var req = new XMLHttpRequest();
   var listeners = [];
   var result = new Promise(function (resolve, reject) {
-    req.open('POST', path);
+    req.open('POST', url);
     req.onload = function () { resolve(req) };
     req.onerror = reject;
     req.send(this.from);
