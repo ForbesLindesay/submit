@@ -1,12 +1,6 @@
-/**
- * Module dependencies.
- */
+'use strict'
 
 var Promise = require('promise');
-
-/**
- * Expose `Submit`.
- */
 
 module.exports = submit;
 
@@ -26,13 +20,14 @@ function Submission(form) {
   this.form = form;
 }
 Submission.prototype.to = function (url) {
+  var from = this.form;
   var req = new XMLHttpRequest();
   var listeners = [];
   var result = new Promise(function (resolve, reject) {
     req.open('POST', url);
     req.onload = function () { resolve(req) };
     req.onerror = reject;
-    req.send(this.from);
+    req.send(from);
   })
   req.onprogress = function (e) {
     e.percent = e.loaded / e.total * 100;
