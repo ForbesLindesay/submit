@@ -3,7 +3,7 @@
 form upload and progress api
 
 [![Build Status](https://travis-ci.org/ForbesLindesay/submit.png?branch=master)](https://travis-ci.org/ForbesLindesay/submit)
-[![Dependency Status](https://david-dm.org/ForbesLindesay/submit.png)](https://david-dm.org/ForbesLindesay/submit)
+[![Dependency Status](https://img.shields.io/david/ForbesLindesay/submit.svg)](https://david-dm.org/ForbesLindesay/submit)
 [![NPM version](https://img.shields.io/npm/v/submit.svg)](https://www.npmjs.com/package/submit)
 
 ## Installation
