@@ -4,7 +4,7 @@
   "description": "form upload and progress api",
   "keywords": [],
   "dependencies": {
-    "promise": "~3.2.0"
+    "promise": "^7.1.1"
   },
   "devDependencies": {
     "mocha": "*"
